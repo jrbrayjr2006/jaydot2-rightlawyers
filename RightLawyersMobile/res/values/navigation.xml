@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="navigation_items">
+        <item>Traffic Ticket</item>
+       	<item>Car Accident</item>
+       	<item>Family Law</item>
+       	<item>Important Documents</item>
+       	<item>Our Website</item>
+       	<item>Share Apps</item>
+       	<item>Call</item>
+    </string-array>
+</resources>
