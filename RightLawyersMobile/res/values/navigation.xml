@@ -9,4 +9,15 @@
        	<item>Share Apps</item>
        	<item>Call</item>
     </string-array>
+    <string-array name="general_field_name_items">
+        <item>Name (First Last)</item>
+        <item>Cell Phone Number</item>
+        <item>Email Address</item>
+    </string-array>
+    <string-array name="traffic_ticket_items">
+        <item>Citation Number</item>
+        <item>City or County of Court</item>
+        <item>Court Date</item>
+        <item>Photo of Citation and Info</item>
+    </string-array>
 </resources>
