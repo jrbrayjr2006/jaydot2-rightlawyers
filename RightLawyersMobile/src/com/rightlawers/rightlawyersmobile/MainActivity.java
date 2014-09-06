@@ -55,9 +55,15 @@ public class MainActivity extends Activity
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
     }
-
+    
+    /**
+     * Get text based on the index of the navigation array
+     * @param number
+     */
     public void onSectionAttached(int number) {
-        switch (number) {
+    	int index = number - 1;
+    	mTitle = getResources().getStringArray(R.array.navigation_items)[index];
+        /*switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -67,7 +73,7 @@ public class MainActivity extends Activity
             case 3:
                 mTitle = getString(R.string.title_section3);
                 break;
-        }
+        }*/
     }
 
     public void restoreActionBar() {
