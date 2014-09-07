@@ -4,10 +4,13 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -100,6 +103,19 @@ public class MainActivity extends Activity
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    /**
+     * Call law firm
+     */
+    private void call() {
+        try {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + getResources().getString(R.string.rightlawyers_phone)));
+            startActivity(callIntent);
+        } catch (ActivityNotFoundException e) {
+            Log.e("", getResources().getString(R.string.call_failed_message), e);
+        }
+    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -165,7 +181,7 @@ public class MainActivity extends Activity
             submitButton.setId(i + 1);
             submitButton.setText(getResources().getString(R.string.submit_button_text));
             submitButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            int y = getDeviceScreenHeight() - 200;
+            int y = getDeviceScreenHeight() - 200;  //TODO make 200 a calculated value
             submitButton.setY(y);
             submitButton.setOnClickListener(new OnClickListener() {
 
