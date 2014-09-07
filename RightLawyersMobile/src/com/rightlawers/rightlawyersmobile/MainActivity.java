@@ -1,22 +1,22 @@
 package com.rightlawers.rightlawyersmobile;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity
@@ -63,17 +63,6 @@ public class MainActivity extends Activity
     public void onSectionAttached(int number) {
     	int index = number - 1;
     	mTitle = getResources().getStringArray(R.array.navigation_items)[index];
-        /*switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-        }*/
     }
 
     public void restoreActionBar() {
@@ -138,7 +127,50 @@ public class MainActivity extends Activity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            /*final LinearLayout ll = new LinearLayout(getActivity());
+            EditText nameEditText = new EditText(getActivity());
+            nameEditText.setId(1);
+            nameEditText.setHint("Name (First Last)");
+            nameEditText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            ll.addView(nameEditText);*/
             return rootView;
+        }
+        
+        /**
+         * Create fields on fragment
+         */
+        public void onActivityCreated(Bundle savedInstanceState) {
+        	super.onActivityCreated(savedInstanceState);
+        	FrameLayout fragmentLayout = (FrameLayout)getActivity().findViewById(R.id.container);
+        	String[] fields = getResources().getStringArray(R.array.general_field_name_items);
+        	int i = 0;
+        	// loop through fields
+        	for(String field: fields) {
+        		i++;
+	        	EditText fieldEditText = new EditText(getActivity());
+	            fieldEditText.setId(i);
+	            fieldEditText.setHint(field); // get field hint from xml
+	            fieldEditText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	            fragmentLayout.addView(fieldEditText);
+        	}
+            
+            // create submission button
+            Button submitButton = new Button(getActivity());
+            submitButton.setId(i + 1);
+            submitButton.setText(getResources().getString(R.string.submit_button_text));
+            submitButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            submitButton.setBottom(3);
+            submitButton.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Toast.makeText(getActivity(), "Submitted form.", Toast.LENGTH_SHORT).show();
+					
+				}
+            	
+            });
+            fragmentLayout.addView(submitButton);
         }
 
         @Override
