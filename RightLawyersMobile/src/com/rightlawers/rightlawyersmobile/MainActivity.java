@@ -4,8 +4,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -144,6 +147,7 @@ public class MainActivity extends Activity
         	FrameLayout fragmentLayout = (FrameLayout)getActivity().findViewById(R.id.container);
         	String[] fields = getResources().getStringArray(R.array.general_field_name_items);
         	int i = 0;
+        	int positionY = 10;
         	// loop through fields
         	for(String field: fields) {
         		i++;
@@ -151,6 +155,8 @@ public class MainActivity extends Activity
 	            fieldEditText.setId(i);
 	            fieldEditText.setHint(field); // get field hint from xml
 	            fieldEditText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	            fieldEditText.setY(positionY);
+	            positionY = positionY + 50;
 	            fragmentLayout.addView(fieldEditText);
         	}
             
@@ -159,7 +165,8 @@ public class MainActivity extends Activity
             submitButton.setId(i + 1);
             submitButton.setText(getResources().getString(R.string.submit_button_text));
             submitButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            submitButton.setBottom(3);
+            int y = getDeviceScreenHeight() - 200;
+            submitButton.setY(y);
             submitButton.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -178,6 +185,18 @@ public class MainActivity extends Activity
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+        
+        /**
+         * Get the screen height in order to calculate the position of view objects
+         * @return
+         */
+        private int getDeviceScreenHeight() {
+        	Display display = getActivity().getWindowManager().getDefaultDisplay();
+        	//DisplayMetrics metrics = new DisplayMetrics();
+        	Point size = new Point();
+        	display.getSize(size);
+        	return size.y;
         }
     }
 
