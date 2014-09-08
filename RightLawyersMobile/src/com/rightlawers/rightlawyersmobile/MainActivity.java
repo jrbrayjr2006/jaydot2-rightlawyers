@@ -47,6 +47,15 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+        
+        
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment splashScreenFragment = fragmentManager.findFragmentById(R.id.splash_fragment);
+        if(splashScreenFragment == null) {
+        	splashScreenFragment = new SplashScreenFragment();
+        	fragmentManager.beginTransaction().add(R.id.container, splashScreenFragment).commit();
+        }
+        setTitle("Right Lawyers");
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -165,16 +174,19 @@ public class MainActivity extends Activity
         	// get the index of the screen
         	int screenId = (Integer)this.getArguments().get(ARG_SECTION_NUMBER);
         	// create array of common and screen specific fields
-        	String[] fields;
+        	String[] fields = {};
         	switch(screenId) {
         	case 1:
-        		fields = util.concat(generalFields,trafficTicketFields);
+        		Log.v("Default Option", "Splash screen...");
         		break;
         	case 2:
+        		fields = util.concat(generalFields,trafficTicketFields);
+        		break;
+        	case 3:
         		fields = util.concat(generalFields,carAccidentFields);
         		break;
         	default:
-        		fields = generalFields;
+        		//fields = generalFields;
         	}
         	
         	// create array of common and screen specific fields
@@ -195,23 +207,61 @@ public class MainActivity extends Activity
         	}
             
             // create submission button
-            Button submitButton = new Button(getActivity());
-            submitButton.setId(i + 1);
-            submitButton.setText(getResources().getString(R.string.submit_button_text));
-            submitButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            int y = getDeviceScreenHeight() - 200;  //TODO make 200 a calculated value
-            submitButton.setY(y);
-            submitButton.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Toast.makeText(getActivity(), "Submitted form.", Toast.LENGTH_SHORT).show();
-					
-				}
-            	
-            });
-            fragmentLayout.addView(submitButton);
+        	if(screenId > 1) {
+	            Button submitButton = new Button(getActivity());
+	            submitButton.setId(i + 1);
+	            submitButton.setText(getResources().getString(R.string.submit_button_text));
+	            submitButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	            int y = getDeviceScreenHeight() - 200;  //TODO make 200 a calculated value
+	            submitButton.setY(y);
+	            submitButton.setOnClickListener(new OnClickListener() {
+	
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "Submitted form.", Toast.LENGTH_SHORT).show();
+						
+					}
+	            	
+	            });
+	            fragmentLayout.addView(submitButton);
+        	} else {
+        		Button callButton = new Button(getActivity());
+	            callButton.setId(i + 1);
+	            callButton.setText(getResources().getString(R.string.call_attorney));
+	            callButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	            int y = screenHeight/2;
+	            callButton.setY(y);
+	            callButton.setOnClickListener(new OnClickListener() {
+	
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "Calling attorney.", Toast.LENGTH_SHORT).show();
+						
+					}
+	            	
+	            });
+	            fragmentLayout.addView(callButton);
+	            
+	            Button shareButton = new Button(getActivity());
+	            shareButton.setId(i + 1);
+	            shareButton.setText(getResources().getString(R.string.share_app));
+	            shareButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	            int y2 = (3*screenHeight)/4;
+	            shareButton.setY(y2);
+	            shareButton.setOnClickListener(new OnClickListener() {
+	
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "Sharing app...", Toast.LENGTH_SHORT).show();
+						
+					}
+	            	
+	            });
+	            fragmentLayout.addView(shareButton);
+        	}
         }
 
         @Override

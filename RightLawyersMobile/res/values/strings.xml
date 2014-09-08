@@ -9,5 +9,8 @@
     <string name="submit_button_text">Submit</string>
     <string name="rightlawyers_phone">7029140400</string>
     <string name="call_failed_message">Call failed</string>
+    <string name="rightlawyers_info_email">info@rightlawyers.com</string>
+    <string name="call_attorney">Call Attorney</string>
+    <string name="share_app">Share App</string>
 
 </resources>
