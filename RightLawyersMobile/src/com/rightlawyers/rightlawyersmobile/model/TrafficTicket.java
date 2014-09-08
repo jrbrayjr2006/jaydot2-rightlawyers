@@ -2,6 +2,14 @@ package com.rightlawyers.rightlawyersmobile.model;
 
 import java.util.Date;
 
+/**
+ * <pre>
+ * This will be used in a future 1.1+ release
+ * </pre>
+ * @author james_r_bray
+ * @version 0.1
+ *
+ */
 public class TrafficTicket {
 	
 	private String firstName;

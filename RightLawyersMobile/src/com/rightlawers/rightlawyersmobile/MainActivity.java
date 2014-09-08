@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import com.rightlawyers.rightlawyersmobile.helper.UtilHelper;
 
 
 public class MainActivity extends Activity
@@ -116,6 +117,7 @@ public class MainActivity extends Activity
             Log.e("", getResources().getString(R.string.call_failed_message), e);
         }
     }
+    
 
     /**
      * A placeholder fragment containing a simple view.
@@ -146,12 +148,6 @@ public class MainActivity extends Activity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            /*final LinearLayout ll = new LinearLayout(getActivity());
-            EditText nameEditText = new EditText(getActivity());
-            nameEditText.setId(1);
-            nameEditText.setHint("Name (First Last)");
-            nameEditText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            ll.addView(nameEditText);*/
             return rootView;
         }
         
@@ -160,8 +156,30 @@ public class MainActivity extends Activity
          */
         public void onActivityCreated(Bundle savedInstanceState) {
         	super.onActivityCreated(savedInstanceState);
+        	UtilHelper util = new UtilHelper();
+        	int screenHeight = getDeviceScreenHeight();
         	FrameLayout fragmentLayout = (FrameLayout)getActivity().findViewById(R.id.container);
-        	String[] fields = getResources().getStringArray(R.array.general_field_name_items);
+        	String[] generalFields = getResources().getStringArray(R.array.general_field_name_items);
+        	String[] trafficTicketFields = getResources().getStringArray(R.array.traffic_ticket_items);
+        	String[] carAccidentFields = getResources().getStringArray(R.array.car_accident);
+        	// get the index of the screen
+        	int screenId = (Integer)this.getArguments().get(ARG_SECTION_NUMBER);
+        	// create array of common and screen specific fields
+        	String[] fields;
+        	switch(screenId) {
+        	case 1:
+        		fields = util.concat(generalFields,trafficTicketFields);
+        		break;
+        	case 2:
+        		fields = util.concat(generalFields,carAccidentFields);
+        		break;
+        	default:
+        		fields = generalFields;
+        	}
+        	
+        	// create array of common and screen specific fields
+        	//String[] fields = util.concat(generalFields,trafficTicketFields);
+        	
         	int i = 0;
         	int positionY = 10;
         	// loop through fields
