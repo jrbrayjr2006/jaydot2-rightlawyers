@@ -12,5 +12,6 @@
     <string name="rightlawyers_info_email">info@rightlawyers.com</string>
     <string name="call_attorney">Call Attorney</string>
     <string name="share_app">Share App</string>
+    <string name="accident_report">Accident Report</string>
 
 </resources>

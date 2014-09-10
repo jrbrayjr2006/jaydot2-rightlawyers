@@ -1,5 +1,8 @@
 package com.rightlawers.rightlawyersmobile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
@@ -23,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
 import com.rightlawyers.rightlawyersmobile.helper.UtilHelper;
 
 
@@ -137,6 +141,13 @@ public class MainActivity extends Activity
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        
+        String  emailSubjectText;
+        
+        /**
+         * List to hold dynamically genrated fields
+         */
+        List<EditText> allFields;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -171,21 +182,30 @@ public class MainActivity extends Activity
         	String[] generalFields = getResources().getStringArray(R.array.general_field_name_items);
         	String[] trafficTicketFields = getResources().getStringArray(R.array.traffic_ticket_items);
         	String[] carAccidentFields = getResources().getStringArray(R.array.car_accident);
+        	String[] familyLawFields = getResources().getStringArray(R.array.family_law_items);
         	// get the index of the screen
         	int screenId = (Integer)this.getArguments().get(ARG_SECTION_NUMBER);
         	// create array of common and screen specific fields
         	String[] fields = {};
+        	
         	switch(screenId) {
         	case 1:
         		Log.v("Default Option", "Splash screen...");
         		break;
         	case 2:
         		fields = util.concat(generalFields,trafficTicketFields);
+        		emailSubjectText = ""; //TODO
         		break;
         	case 3:
         		fields = util.concat(generalFields,carAccidentFields);
+        		emailSubjectText = getResources().getString(R.string.accident_report);
+        		break;
+        	case 7:
+        		fields = util.concat(generalFields,familyLawFields);
+        		emailSubjectText = ""; //TODO
         		break;
         	default:
+        		emailSubjectText = "";
         		//fields = generalFields;
         	}
         	
@@ -194,14 +214,19 @@ public class MainActivity extends Activity
         	
         	int i = 0;
         	int positionY = 10;
+        	allFields = new ArrayList<EditText>();
         	// loop through fields
         	for(String field: fields) {
         		i++;
 	        	EditText fieldEditText = new EditText(getActivity());
+	        	allFields.add(fieldEditText);
 	            fieldEditText.setId(i);
 	            fieldEditText.setHint(field); // get field hint from xml
 	            fieldEditText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	            fieldEditText.setY(positionY);
+	            fieldEditText.setBackgroundColor(getResources().getColor(R.color.grey));
+	            float customAlpha = Float.valueOf("0.75");
+	            fieldEditText.setAlpha(customAlpha);
 	            positionY = positionY + 50;
 	            fragmentLayout.addView(fieldEditText);
         	}
@@ -212,15 +237,15 @@ public class MainActivity extends Activity
 	            submitButton.setId(i + 1);
 	            submitButton.setText(getResources().getString(R.string.submit_button_text));
 	            submitButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	            int y = getDeviceScreenHeight() - 200;  //TODO make 200 a calculated value
+	            int y = (int) (getDeviceScreenHeight() - (screenHeight * 0.25));  //TODO make 200 a calculated value
 	            submitButton.setY(y);
 	            submitButton.setOnClickListener(new OnClickListener() {
 	
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						Toast.makeText(getActivity(), "Submitted form.", Toast.LENGTH_SHORT).show();
-						
+						//sendEmail();  //TODO uncomment this
+						String name = allFields.get(0).getText().toString(); //field can be retrieve from array
+						Toast.makeText(getActivity(), name + " submitted form.", Toast.LENGTH_SHORT).show();
 					}
 	            	
 	            });
@@ -262,6 +287,18 @@ public class MainActivity extends Activity
 	            });
 	            fragmentLayout.addView(shareButton);
         	}
+        	
+        }
+        
+        /**
+         * send form data via email
+         */
+        private void sendEmail() {
+        	Intent emailIntent = new Intent(Intent.ACTION_SEND);
+			emailIntent.setType("text/plain");
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubjectText);
+			//TODO complete method
         }
 
         @Override

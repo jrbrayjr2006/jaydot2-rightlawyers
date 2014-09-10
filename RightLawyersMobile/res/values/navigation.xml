@@ -3,11 +3,19 @@
     <string-array name="navigation_items">
         <item>Right Lawyers</item>
         <item>Traffic Ticket</item>
-       	<item>Car Accident</item>
+       	<item>Car Accident ></item>
+       	<item name="sub">Car Accident</item>
+       	<item name="sub">Property Damage Claim</item>
+       	<item name="sub">Police Report</item>
        	<item>Family Law</item>
+       	<item>Medial Pain Log</item>
        	<item>Important Documents</item>
        	<item>Our Website</item>
     </string-array>
+    <array name="icons">
+        <item>@drawable/phone_icon</item>
+        <item>@drawable/camera_icon</item>
+    </array>
     <string-array name="general_field_name_items">
         <item>Name (First Last)</item>
         <item>Cell Phone Number</item>
@@ -24,6 +32,11 @@
         <item name="vehicle_model">Vehicle Model</item>
     </string-array>
     <string-array name="family_law_items">
-        
+        <item>Years Married</item>
+        <item>Number of Children</item>
+        <item>Own Home?</item>
+        <item>Currently Living Together?</item>
+        <item>IRA / Pension / 401(k)</item>
+        <item>Combined Incomes</item>
     </string-array>
 </resources>
