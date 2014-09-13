@@ -142,6 +142,8 @@ public class MainActivity extends Activity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         
+        private static final int BUTTON_SPACING = 60;
+        
         String  emailSubjectText;
         
         /**
@@ -182,6 +184,8 @@ public class MainActivity extends Activity
         	String[] generalFields = getResources().getStringArray(R.array.general_field_name_items);
         	String[] trafficTicketFields = getResources().getStringArray(R.array.traffic_ticket_items);
         	String[] carAccidentFields = getResources().getStringArray(R.array.car_accident);
+        	String[] carAccidentPropertyDamageClaimFields = getResources().getStringArray(R.array.property_damage_claim);
+        	String[] carAccidentPoliceReport = getResources().getStringArray(R.array.police_report);
         	String[] familyLawFields = getResources().getStringArray(R.array.family_law_items);
         	// get the index of the screen
         	int screenId = (Integer)this.getArguments().get(ARG_SECTION_NUMBER);
@@ -199,6 +203,18 @@ public class MainActivity extends Activity
         	case 3:
         		fields = util.concat(generalFields,carAccidentFields);
         		emailSubjectText = getResources().getString(R.string.accident_report);
+        		break;
+        	case 4:
+        		fields = util.concat(generalFields,carAccidentFields);
+        		emailSubjectText = ""; //TODO
+        		break;
+        	case 5:
+        		fields = util.concat(generalFields,carAccidentPropertyDamageClaimFields);
+        		emailSubjectText = ""; //TODO
+        		break;
+        	case 6:
+        		fields = util.concat(generalFields,carAccidentPoliceReport);
+        		emailSubjectText = ""; //TODO
         		break;
         	case 7:
         		fields = util.concat(generalFields,familyLawFields);
@@ -251,12 +267,14 @@ public class MainActivity extends Activity
 	            });
 	            fragmentLayout.addView(submitButton);
         	} else {
+        		int verticalPosition = screenHeight/2;
+        		// generate call attorney button
         		Button callButton = new Button(getActivity());
 	            callButton.setId(i + 1);
 	            callButton.setText(getResources().getString(R.string.call_attorney));
 	            callButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	            int y = screenHeight/2;
-	            callButton.setY(y);
+	            int y = verticalPosition;
+	            callButton.setY(verticalPosition);
 	            callButton.setOnClickListener(new OnClickListener() {
 	
 					@Override
@@ -269,12 +287,32 @@ public class MainActivity extends Activity
 	            });
 	            fragmentLayout.addView(callButton);
 	            
+	            //generate our website button
+	            Button websiteButton = new Button(getActivity());
+	            websiteButton.setId(i + 1);
+	            websiteButton.setText(getResources().getString(R.string.website_btn_title));
+	            websiteButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	            verticalPosition = verticalPosition + BUTTON_SPACING;
+	            websiteButton.setY(verticalPosition);
+	            websiteButton.setOnClickListener(new OnClickListener() {
+	
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Toast.makeText(getActivity(), "Go To Website....", Toast.LENGTH_SHORT).show();
+						
+					}
+	            	
+	            });
+	            fragmentLayout.addView(websiteButton);
+	            
+	            //generate share app button
 	            Button shareButton = new Button(getActivity());
 	            shareButton.setId(i + 1);
 	            shareButton.setText(getResources().getString(R.string.share_app));
 	            shareButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-	            int y2 = (3*screenHeight)/4;
-	            shareButton.setY(y2);
+	            verticalPosition = verticalPosition + BUTTON_SPACING;
+	            shareButton.setY(verticalPosition);
 	            shareButton.setOnClickListener(new OnClickListener() {
 	
 					@Override

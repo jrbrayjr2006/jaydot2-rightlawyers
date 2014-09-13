@@ -10,7 +10,6 @@
        	<item>Family Law</item>
        	<item>Medial Pain Log</item>
        	<item>Important Documents</item>
-       	<item>Our Website</item>
     </string-array>
     <array name="icons">
         <item>@drawable/phone_icon</item>
@@ -30,6 +29,16 @@
     <string-array name="car_accident">
         <item name="vehicle_make">Vehicle Make</item>
         <item name="vehicle_model">Vehicle Model</item>
+    </string-array>
+    <string-array name="property_damage_claim ">
+        <item>Your Insurance Company</item>
+        <item>Your Policy Number</item>
+        <item>Other Insurance Company</item>
+        <item>Other Policy Number</item>
+    </string-array>
+    <string-array name="police_report">
+        <item>Police Department</item>
+        <item>Report Number</item>
     </string-array>
     <string-array name="family_law_items">
         <item>Years Married</item>
