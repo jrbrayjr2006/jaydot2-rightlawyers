@@ -122,7 +122,7 @@ public class MainActivity extends Activity
     /**
      * Call law firm
      */
-    private void call() {
+    public void call() {
         try {
             Intent callIntent = new Intent(Intent.ACTION_CALL);
             callIntent.setData(Uri.parse("tel:" + getResources().getString(R.string.rightlawyers_phone)));
@@ -130,12 +130,6 @@ public class MainActivity extends Activity
         } catch (ActivityNotFoundException e) {
             Log.e("", getResources().getString(R.string.call_failed_message), e);
         }
-    }
-    
-    public void goToWebsite() {
-    	String url = "http://" + getResources().getString(R.string.website_url);
-    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-    	startActivity(browserIntent);
     }
     
 
@@ -287,6 +281,13 @@ public class MainActivity extends Activity
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
+						try {
+				            Intent callIntent = new Intent(Intent.ACTION_CALL);
+				            callIntent.setData(Uri.parse("tel:" + getResources().getString(R.string.rightlawyers_phone)));
+				            startActivity(callIntent);
+				        } catch (ActivityNotFoundException e) {
+				            Log.e("", getResources().getString(R.string.call_failed_message), e);
+				        }
 						Toast.makeText(getActivity(), "Calling attorney.", Toast.LENGTH_SHORT).show();
 						
 					}
