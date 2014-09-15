@@ -325,9 +325,11 @@ public class MainActivity extends Activity
 	
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						Toast.makeText(getActivity(), "Sharing app...", Toast.LENGTH_SHORT).show();
-						
+						Intent sendIntent = new Intent();
+						sendIntent.setAction(Intent.ACTION_SEND);
+						sendIntent.putExtra(Intent.EXTRA_TEXT, "Go to Right Lawyers");
+						sendIntent.setType("text/plain");
+						startActivity(sendIntent);
 					}
 	            	
 	            });
