@@ -10,6 +10,7 @@ import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -129,6 +130,12 @@ public class MainActivity extends Activity
         } catch (ActivityNotFoundException e) {
             Log.e("", getResources().getString(R.string.call_failed_message), e);
         }
+    }
+    
+    public void goToWebsite() {
+    	String url = "http://" + getResources().getString(R.string.website_url);
+    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    	startActivity(browserIntent);
     }
     
 
@@ -295,12 +302,13 @@ public class MainActivity extends Activity
 	            verticalPosition = verticalPosition + BUTTON_SPACING;
 	            websiteButton.setY(verticalPosition);
 	            websiteButton.setOnClickListener(new OnClickListener() {
-	
+	            	
+	            	// open law firm website
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						Toast.makeText(getActivity(), "Go To Website....", Toast.LENGTH_SHORT).show();
-						
+						String url = "http://" + getResources().getString(R.string.website_url);
+				    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				    	startActivity(browserIntent);
 					}
 	            	
 	            });
@@ -356,6 +364,20 @@ public class MainActivity extends Activity
         	Point size = new Point();
         	display.getSize(size);
         	return size.y;
+        }
+        
+        /**
+         * 
+         * @return
+         */
+        private Button generatePhotoButton(int id) {
+        	Button photoButton = new Button(getActivity());
+        	photoButton.setText(getResources().getString(R.string.new_photo));
+        	photoButton.setId(id);
+        	photoButton.setBackgroundColor(getResources().getColor(R.color.grey));
+        	//photoButton.setBackground(getResources().getDrawable(R.drawable.camera_icon));
+        	//TODO add camera icon to button
+        	return photoButton;
         }
     }
 
