@@ -1,5 +1,6 @@
 package com.rightlawers.rightlawyersmobile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +11,10 @@ import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Display;
@@ -28,7 +30,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.rightlawyers.rightlawyersmobile.helper.EmailHelper;
 import com.rightlawyers.rightlawyersmobile.helper.UtilHelper;
+import com.rightlawyers.rightlawyersmobile.to.AccidentTO;
 
 
 public class MainActivity extends Activity
@@ -132,6 +136,27 @@ public class MainActivity extends Activity
         }
     }
     
+    /**
+     * 
+     */
+    public void takePicture() {
+    	Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    	String filename = "";
+    }
+    
+    /**
+     * Create the local storage area for photos
+     */
+    private void CreateDirectoryForPictures()
+	{
+		File mDir;
+	    mDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
+	    if (!mDir.exists())
+	    {
+	        mDir.mkdir();
+	    }
+	}
+    
 
     /**
      * A placeholder fragment containing a simple view.
@@ -145,12 +170,19 @@ public class MainActivity extends Activity
         
         private static final int BUTTON_SPACING = 60;
         
+        /**
+         * Transfer object for data
+         */
+        AccidentTO ato = new AccidentTO();
+        
         String  emailSubjectText;
         
         /**
          * List to hold dynamically genrated fields
          */
         List<EditText> allFields;
+        
+        EmailHelper emailHelper = new EmailHelper();
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -231,6 +263,8 @@ public class MainActivity extends Activity
         	
         	int i = 0;
         	int positionY = 10;
+        	
+        	// all fields generated
         	allFields = new ArrayList<EditText>();
         	// loop through fields
         	for(String field: fields) {
@@ -260,9 +294,19 @@ public class MainActivity extends Activity
 	
 					@Override
 					public void onClick(View v) {
+						String name = allFields.get(0).getText().toString(); ; //field can be retrieve from array
+						String phone = allFields.get(1).getText().toString(); ;
+						String email = allFields.get(2).getText().toString(); ;
+						
+						ato.fullname = name;
+						ato.phone = phone;
+						ato.email = email;
+						
+						emailHelper.buildEmailBody(ato);
+						
 						//sendEmail();  //TODO uncomment this
-						String name = allFields.get(0).getText().toString(); //field can be retrieve from array
-						Toast.makeText(getActivity(), name + " submitted form.", Toast.LENGTH_SHORT).show();
+						
+						Toast.makeText(getActivity(), ato.fullname + " submitted form and email is " + ato.email, Toast.LENGTH_SHORT).show();
 					}
 	            	
 	            });
@@ -382,6 +426,17 @@ public class MainActivity extends Activity
         	//TODO add camera icon to button
         	return photoButton;
         }
+        
+        /**
+         * Pass in list of EditText objects and extract values
+         * @param _fields
+         */
+        private void fieldMapper(List<EditText> _fields) {
+        	//TODO make general
+        	int i = 0;
+        	_fields.get(i);
+        }
+        	
     }
 
 }

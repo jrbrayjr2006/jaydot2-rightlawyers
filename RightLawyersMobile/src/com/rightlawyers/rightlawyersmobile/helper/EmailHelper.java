@@ -22,9 +22,9 @@ public class EmailHelper {
 		
 		//TODO add logic to support building email body
 		body.append("Accident Report\n\n");
-    	body.append("Your Name: " + ato.yourName);
-    	body.append("\nYour Email: " + ato.yourEmail);
-    	body.append("\nYour Phone: " + ato.yourPhone);
+    	body.append("Your Name: " + ato.fullname);
+    	body.append("\nYour Email: " + ato.email);
+    	body.append("\nYour Phone: " + ato.phone);
     	body.append("\nOther Name: " + ato.otherName);
     	body.append("\nOther Email:" + ato.otherEmail);
     	body.append("\nOther Phone:" + ato.otherPhone);

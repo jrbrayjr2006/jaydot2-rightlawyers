@@ -16,5 +16,6 @@
     <string name="website_url">www.rightlawyers.com</string>
     <string name="accident_report">Accident Report</string>
     <string name="new_photo">Add New Photo</string>
+    <string name="photo_storage_directory">RightLawyerImages</string>
 
 </resources>
