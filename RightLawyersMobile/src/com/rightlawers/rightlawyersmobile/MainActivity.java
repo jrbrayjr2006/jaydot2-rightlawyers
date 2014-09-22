@@ -302,7 +302,7 @@ public class MainActivity extends Activity
 						ato.phone = phone;
 						ato.email = email;
 						
-						emailHelper.buildEmailBody(ato);
+						emailHelper.buildEmailBodyTrafficTicket(ato);
 						
 						//sendEmail();  //TODO uncomment this
 						
