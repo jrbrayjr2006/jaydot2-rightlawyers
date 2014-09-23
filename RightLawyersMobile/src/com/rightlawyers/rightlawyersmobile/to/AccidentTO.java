@@ -3,7 +3,10 @@
  */
 package com.rightlawyers.rightlawyersmobile.to;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+
+import android.net.Uri;
 
 /**
  * @author james_r_bray
@@ -27,6 +30,9 @@ public class AccidentTO {
 	public String reportNumber = "";
 	public String cityCounty = "";
 	public String notes = "";
+	
+	public ArrayList<Uri> yourCarImages;
+	public ArrayList<Uri> otherCarImages;
 
 	/**
 	 * 

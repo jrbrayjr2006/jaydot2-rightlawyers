@@ -278,7 +278,7 @@ public class MainActivity extends Activity
 	            fieldEditText.setBackgroundColor(getResources().getColor(R.color.grey));
 	            float customAlpha = Float.valueOf("0.75");
 	            fieldEditText.setAlpha(customAlpha);
-	            positionY = positionY + 50;
+	            positionY = positionY + 70;
 	            fragmentLayout.addView(fieldEditText);
         	}
             
@@ -294,6 +294,7 @@ public class MainActivity extends Activity
 	
 					@Override
 					public void onClick(View v) {
+						emailSubjectText = "Traffic Ticket";
 						String name = allFields.get(0).getText().toString(); ; //field can be retrieve from array
 						String phone = allFields.get(1).getText().toString(); ;
 						String email = allFields.get(2).getText().toString(); ;
@@ -304,7 +305,7 @@ public class MainActivity extends Activity
 						
 						emailHelper.buildEmailBodyTrafficTicket(ato);
 						
-						//sendEmail();  //TODO uncomment this
+						sendEmail();  //TODO uncomment this
 						
 						Toast.makeText(getActivity(), ato.fullname + " submitted form and email is " + ato.email, Toast.LENGTH_SHORT).show();
 					}
@@ -389,9 +390,38 @@ public class MainActivity extends Activity
         private void sendEmail() {
         	Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType("text/plain");
-			emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+			//emailIntent.putExtra(Intent.EXTRA_EMAIL, getResources().getString(R.string.rightlawyers_info_email));
+			//TODO Remove test email
+			// email addresses should be in a string array
+			List<String> emailAddresses = new ArrayList<String>();
+			emailAddresses.add(getResources().getString(R.string.test_email));
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.test_email)});
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubjectText);
 			//TODO complete method
+			String body = "get email body";
+			emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+			
+			startActivityForResult(Intent.createChooser(emailIntent, "Send Report"), 1000);
+        }
+        
+        /**
+         * <pre>
+         * Create an email and send it with the incident report information
+         * </pre>
+         * @param emailSubject
+         * @param emailBody
+         */
+        private void sendEmail(String emailSubject, String emailBody) {
+        	Intent emailIntent = new Intent(Intent.ACTION_SEND);
+			emailIntent.setType("text/plain");
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.rightlawyers_info_email)});
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+			if(emailBody == null) {
+				emailBody = "No email body available";
+			}
+			emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
+			
+			startActivityForResult(Intent.createChooser(emailIntent, "Send Report"), 1000);
         }
 
         @Override

@@ -3,5 +3,6 @@
     <string-array name="rightlawyers_email">
         <item>robvigillv@gmail.com</item>
     </string-array>
+    <string name="test_email">jrbrayjr2003@yahoo.com</string>
     
 </resources>
