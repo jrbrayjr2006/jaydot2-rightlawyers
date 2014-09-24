@@ -24,9 +24,14 @@ public class EmailHelper {
 		body.append("Traffic Ticket\n\n");
     	body.append(buildEmailBodyBasicInfo(ato));
     	body.append("\nOther Name: " + ato.otherName);
-    	body.append("\nOther Email:" + ato.otherEmail);
-    	body.append("\nOther Phone:" + ato.otherPhone);
-    	body.append("\n\nCar Info\n\n");
+    	body.append("\nOther Email: " + ato.otherEmail);
+    	body.append("\nOther Phone: " + ato.otherPhone);
+    	body.append("\n\nTicket Information\n\n");
+    	body.append("\nCitation Number: " + ato.citationNo);
+    	body.append("\nCity or County of Court: " + ato.cityCounty);
+    	body.append("\nCourt Date: " + ato.courtDate);
+    	
+    	/*
     	body.append("Your Make: " + ato.yourMake);
     	body.append("\nYour Model: " + ato.yourModel);
     	body.append("\nYour License/Year: " + ato.yourLicense);
@@ -38,6 +43,7 @@ public class EmailHelper {
     	body.append("\nReport Number: " + ato.reportNumber);
     	body.append("\nCity/County: " + ato.cityCounty);
     	body.append("\n\nNotes\n\n" + ato.notes);
+    	*/
     	
 		return body.toString();
 	}
@@ -46,14 +52,15 @@ public class EmailHelper {
 		StringBuffer body = new StringBuffer();
 		body.append("Accident Report\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
-		//TODO add email body content
+		body.append("Your Vehicle Make: " + ato.yourMake);
+    	body.append("\nYour Vehicle Model: " + ato.yourModel);
 		
 		return body.toString();
 	}
 	
 	public String buildEmailBodyPropertyDamage(AccidentTO ato) {
 		StringBuffer body = new StringBuffer();
-		body.append("Accident Report\n\n");
+		body.append("Accident Report - Property Damage\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
 		//TODO add email body content
 		
@@ -62,7 +69,7 @@ public class EmailHelper {
 	
 	public String buildEmailBodyPoliceReport(AccidentTO ato) {
 		StringBuffer body = new StringBuffer();
-		body.append("Accident Report\n\n");
+		body.append("Accident Report - Police Report\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
 		//TODO add email body content
 		
@@ -100,7 +107,7 @@ public class EmailHelper {
 		body.append("Your Name: " + ato.fullname);
     	body.append("\nYour Email: " + ato.email);
     	body.append("\nYour Phone: " + ato.phone);
-		//TODO add email body content
+		body.append("\n\n");
 		
 		return body.toString();
 	}

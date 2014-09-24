@@ -177,6 +177,8 @@ public class MainActivity extends Activity
         
         String  emailSubjectText;
         
+        String emailBodyText;
+        
         /**
          * List to hold dynamically genrated fields
          */
@@ -231,7 +233,7 @@ public class MainActivity extends Activity
         		break;
         	case 2:
         		fields = util.concat(generalFields,trafficTicketFields);
-        		emailSubjectText = ""; //TODO
+        		emailSubjectText = getResources().getString(R.string.traffic_ticket);
         		break;
         	case 3:
         		fields = util.concat(generalFields,carAccidentFields);
@@ -243,15 +245,15 @@ public class MainActivity extends Activity
         		break;
         	case 5:
         		fields = util.concat(generalFields,carAccidentPropertyDamageClaimFields);
-        		emailSubjectText = ""; //TODO
+        		emailSubjectText = getResources().getString(R.string.property_damage_claim);
         		break;
         	case 6:
         		fields = util.concat(generalFields,carAccidentPoliceReport);
-        		emailSubjectText = ""; //TODO
+        		emailSubjectText = getResources().getString(R.string.police_report);
         		break;
         	case 7:
         		fields = util.concat(generalFields,familyLawFields);
-        		emailSubjectText = ""; //TODO
+        		emailSubjectText = getResources().getString(R.string.family_law);
         		break;
         	default:
         		emailSubjectText = "";
@@ -294,20 +296,60 @@ public class MainActivity extends Activity
 	
 					@Override
 					public void onClick(View v) {
-						emailSubjectText = "Traffic Ticket";
-						String name = allFields.get(0).getText().toString(); ; //field can be retrieve from array
-						String phone = allFields.get(1).getText().toString(); ;
-						String email = allFields.get(2).getText().toString(); ;
+						
+						String name = allFields.get(0).getText().toString(); //field can be retrieve from array
+						String phone = allFields.get(1).getText().toString();
+						String email = allFields.get(2).getText().toString();
 						
 						ato.fullname = name;
 						ato.phone = phone;
 						ato.email = email;
 						
-						emailHelper.buildEmailBodyTrafficTicket(ato);
+						// get proper screen field values based on screen id
+						int screenId = (Integer)getArguments().get(ARG_SECTION_NUMBER);
+						switch(screenId) {
+			        	case 1:
+			        		Log.v("Default Option", "Splash screen...");
+			        		break;
+			        	case 2:
+			        		emailSubjectText = getResources().getString(R.string.traffic_ticket);
+			        		ato.citationNo = allFields.get(3).getText().toString();
+			        		ato.cityCounty = allFields.get(4).getText().toString();
+			        		ato.courtDate = allFields.get(5).getText().toString();
+			        		emailBodyText = emailHelper.buildEmailBodyTrafficTicket(ato);
+			        		break;
+			        	case 3:
+			        		emailSubjectText = getResources().getString(R.string.accident_report);
+			        		ato.yourMake = allFields.get(3).getText().toString();
+			        		ato.yourModel = allFields.get(4).getText().toString();
+			        		emailBodyText = emailHelper.buildEmailBodyCarAccident(ato);
+			        		break;
+			        	case 4:
+			        		emailSubjectText = ""; //TODO
+			        		break;
+			        	case 5:
+			        		emailSubjectText = getResources().getString(R.string.property_damage_claim);
+			        		
+			        		emailBodyText = emailHelper.buildEmailBodyPropertyDamage(ato);
+			        		break;
+			        	case 6:
+			        		emailSubjectText = getResources().getString(R.string.police_report);
+			        		
+			        		emailBodyText = emailHelper.buildEmailBodyPoliceReport(ato);
+			        		break;
+			        	case 7:
+			        		emailSubjectText = getResources().getString(R.string.family_law);
+			        		
+			        		emailBodyText = emailHelper.buildEmailBodyFamilyLaw(ato);
+			        		break;
+						}
 						
-						sendEmail();  //TODO uncomment this
 						
-						Toast.makeText(getActivity(), ato.fullname + " submitted form and email is " + ato.email, Toast.LENGTH_SHORT).show();
+						
+						sendEmail();
+						sendEmail(emailSubjectText,emailBodyText);
+						
+						Toast.makeText(getActivity(), emailSubjectText, Toast.LENGTH_SHORT).show();
 					}
 	            	
 	            });
@@ -414,7 +456,10 @@ public class MainActivity extends Activity
         private void sendEmail(String emailSubject, String emailBody) {
         	Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType("text/plain");
-			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.rightlawyers_info_email)});
+			List<String> emailAddresses = new ArrayList<String>();
+			emailAddresses.add(getResources().getString(R.string.test_email));
+			//emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.rightlawyers_info_email)});
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.test_email)});  //TODO remove when testing is done
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
 			if(emailBody == null) {
 				emailBody = "No email body available";

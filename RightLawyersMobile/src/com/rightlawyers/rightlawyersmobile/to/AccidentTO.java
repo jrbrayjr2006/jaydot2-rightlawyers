@@ -14,9 +14,17 @@ import android.net.Uri;
  */
 public class AccidentTO {
 	
+	// General fields
 	public String fullname = "";
 	public String email = "";
 	public String phone = "";
+	
+	// Traffic Ticket fields
+	public String citationNo = "";
+	public String cityCounty = "";
+	public String courtDate = "";
+	
+	
 	public String otherName = "";
 	public String otherPhone = "";
 	public String otherEmail = "";
@@ -28,7 +36,7 @@ public class AccidentTO {
 	public String otherLicense = "";
 	public String officerName = "";
 	public String reportNumber = "";
-	public String cityCounty = "";
+	
 	public String notes = "";
 	
 	public ArrayList<Uri> yourCarImages;

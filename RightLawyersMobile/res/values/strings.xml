@@ -15,6 +15,12 @@
     <string name="website_btn_title">Our Website</string>
     <string name="website_url">www.rightlawyers.com</string>
     <string name="accident_report">Accident Report</string>
+    <string name="traffic_ticket">Traffic Ticket</string>
+    <string name="property_damage_claim">Property Damage Claim</string>
+    <string name="police_report">Police Report</string>
+    <string name="family_law">Family Law</string>
+    <string name="medical_pain_log">Medial Pain Log</string>
+    <string name="important_documents">Important Documents</string>
     <string name="new_photo">Add New Photo</string>
     <string name="photo_storage_directory">RightLawyerImages</string>
 
