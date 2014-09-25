@@ -24,6 +24,7 @@
         <item>Citation Number</item>
         <item>City or County of Court</item>
         <item>Court Date</item>
+        <item>How did you hear about us?</item>
         <item>Photo of Citation and Info</item>
     </string-array>
     <string-array name="car_accident">

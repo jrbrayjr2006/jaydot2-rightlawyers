@@ -1,7 +1,10 @@
 package com.rightlawers.rightlawyersmobile;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -10,11 +13,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Display;
@@ -28,6 +35,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.rightlawyers.rightlawyersmobile.helper.EmailHelper;
@@ -136,27 +144,6 @@ public class MainActivity extends Activity
         }
     }
     
-    /**
-     * 
-     */
-    public void takePicture() {
-    	Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    	String filename = "";
-    }
-    
-    /**
-     * Create the local storage area for photos
-     */
-    private void CreateDirectoryForPictures()
-	{
-		File mDir;
-	    mDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
-	    if (!mDir.exists())
-	    {
-	        mDir.mkdir();
-	    }
-	}
-    
 
     /**
      * A placeholder fragment containing a simple view.
@@ -168,7 +155,9 @@ public class MainActivity extends Activity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         
-        private static final int BUTTON_SPACING = 60;
+        private static final int BUTTON_SPACING = 70;
+        
+        private static final int REQUEST_IMAGE_CAPTURE = 1;
         
         /**
          * Transfer object for data
@@ -178,6 +167,22 @@ public class MainActivity extends Activity
         String  emailSubjectText;
         
         String emailBodyText;
+        
+        Button photoButton;
+        
+        boolean photoFlag = false;
+        
+        Uri photoCaptureUri;
+        
+        ImageView photoThumb;
+        
+        File photoFile;
+        
+        File photoDir;
+        
+        String photoFileName;
+        
+        String mCurrentPhotoPath;
         
         /**
          * List to hold dynamically genrated fields
@@ -211,6 +216,7 @@ public class MainActivity extends Activity
         /**
          * Create fields on fragment
          */
+        @Override
         public void onActivityCreated(Bundle savedInstanceState) {
         	super.onActivityCreated(savedInstanceState);
         	UtilHelper util = new UtilHelper();
@@ -234,10 +240,12 @@ public class MainActivity extends Activity
         	case 2:
         		fields = util.concat(generalFields,trafficTicketFields);
         		emailSubjectText = getResources().getString(R.string.traffic_ticket);
+        		photoFlag = true;
         		break;
         	case 3:
         		fields = util.concat(generalFields,carAccidentFields);
         		emailSubjectText = getResources().getString(R.string.accident_report);
+        		photoFlag = true;
         		break;
         	case 4:
         		fields = util.concat(generalFields,carAccidentFields);
@@ -282,6 +290,27 @@ public class MainActivity extends Activity
 	            fieldEditText.setAlpha(customAlpha);
 	            positionY = positionY + 70;
 	            fragmentLayout.addView(fieldEditText);
+        	}
+        	
+        	// generate photo button only on certain forms
+        	if(photoFlag == true) {
+        		photoButton = generatePhotoButton(++i);
+        		positionY = positionY + 70;
+        		photoButton.setY(positionY);
+        		photoButton.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						takePicture();
+					}});
+        		fragmentLayout.addView(photoButton);
+        		
+        		photoThumb = new ImageView(getActivity());
+        		photoThumb.setLayoutParams(new LayoutParams(36,36));  //TODO test
+        		positionY = positionY + 70;
+        		
+        		fragmentLayout.addView(photoThumb);
         	}
             
             // create submission button
@@ -426,6 +455,29 @@ public class MainActivity extends Activity
         	
         }
         
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        	super.onActivityResult(requestCode, resultCode, data);
+        	if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        		Bundle extras = data.getExtras();
+                //Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+	        	Uri contentUri = photoCaptureUri;
+			    BitmapFactory.Options options = new BitmapFactory.Options();
+			    options.inSampleSize = 4;
+			    	
+			    Bitmap imageBitmap = BitmapFactory.decodeFile( contentUri.getPath(), options );
+			    Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
+				cursor.moveToFirst();  //if not doing this, 01-22 19:17:04.564: ERROR/AndroidRuntime(26264): Caused by: android.database.CursorIndexOutOfBoundsException: Index -1 requested, with a size of 1
+				int idx = cursor.getColumnIndex(ImageColumns.DATA);
+				String fileSrc = cursor.getString(idx);
+				photoCaptureUri=contentUri;
+				if(photoThumb != null) {
+                	photoThumb.setImageBitmap(imageBitmap);
+                }
+        	}
+        }
+        
         /**
          * send form data via email
          */
@@ -497,6 +549,7 @@ public class MainActivity extends Activity
         	photoButton.setText(getResources().getString(R.string.new_photo));
         	photoButton.setId(id);
         	photoButton.setBackgroundColor(getResources().getColor(R.color.grey));
+        	photoButton.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         	//photoButton.setBackground(getResources().getDrawable(R.drawable.camera_icon));
         	//TODO add camera icon to button
         	return photoButton;
@@ -510,6 +563,59 @@ public class MainActivity extends Activity
         	//TODO make general
         	int i = 0;
         	_fields.get(i);
+        }
+        
+        /**
+         * 
+         */
+        private void takePicture() {
+        	Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        	
+        	// Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+
+        	
+        	createDirectoryForPictures();
+        	
+        	//photoFile = new File(photoDir, photoFileName);
+    	    this.photoCaptureUri=Uri.fromFile(photoFile);
+        	if (photoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivityForResult(photoIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+        
+        /**
+         * Create the local storage area for photos
+         */
+        private void createDirectoryForPictures()
+    	{
+    	    photoDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
+    	    if (!photoDir.exists())
+    	    {
+    	        photoDir.mkdir();
+    	    }
+    	}
+        
+        private File createImageFile() throws IOException {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
+            File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+            );
+
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+            photoFileName = imageFileName;
+            return image;
         }
         	
     }

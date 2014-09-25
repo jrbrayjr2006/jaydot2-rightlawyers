@@ -47,6 +47,8 @@ public class AccidentTO {
 	 */
 	public AccidentTO() {
 		// TODO Auto-generated constructor stub
+		yourCarImages = new ArrayList<Uri>();
+		otherCarImages = new ArrayList<Uri>();
 	}
 	
 	public AccidentTO(LinkedList<String> data) {

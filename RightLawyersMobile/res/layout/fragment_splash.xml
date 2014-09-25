@@ -23,5 +23,15 @@
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/logo_text"
         android:src="@drawable/logo" />
-
+    <!--  
+    <Button 
+        android:id="@+id/testPhotoBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:drawableLeft="@drawable/camera_icon"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dip"
+        android:text="@string/new_photo"/>
+	-->
 </RelativeLayout>
