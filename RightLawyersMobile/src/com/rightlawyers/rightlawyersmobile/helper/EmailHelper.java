@@ -11,7 +11,12 @@ import com.rightlawyers.rightlawyersmobile.to.AccidentTO;
  */
 public class EmailHelper {
 	
-	public EmailHelper() {}
+	//protected Context mContext;
+	//protected Resources mResources;
+	
+	public EmailHelper() {
+		//
+	}
 	
 	/**
 	 * Constructs the body of the email message
@@ -57,12 +62,26 @@ public class EmailHelper {
 		
 		return body.toString();
 	}
-	
+	 
+	/**
+	 * Experimental method to see if patterns and convention can be used
+	 * @param ato
+	 * @return
+	 */
 	public String buildEmailBodyPropertyDamage(AccidentTO ato) {
 		StringBuffer body = new StringBuffer();
 		body.append("Accident Report - Property Damage\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
 		//TODO add email body content
+		//String[] carAccidentPropertyDamageClaimFields = mResources.getStringArray(R.array.property_damage_claim);
+		body.append("\nYour Insurance Company: ");
+		body.append(ato.yourInsuranceCompany);
+		body.append("\nYour Policy Number: ");
+		body.append(ato.yourPolicyNumber);
+		body.append("\nOther Insurance Company: ");
+		body.append(ato.otherInsuranceCompany);
+		body.append("\nOther Policy Number: ");
+		body.append(ato.otherPolicyNumber);
 		
 		return body.toString();
 	}
@@ -71,6 +90,7 @@ public class EmailHelper {
 		StringBuffer body = new StringBuffer();
 		body.append("Accident Report - Police Report\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
+		body.append("\nPolice Department");
 		//TODO add email body content
 		
 		return body.toString();
@@ -80,6 +100,7 @@ public class EmailHelper {
 		StringBuffer body = new StringBuffer();
 		body.append("Family Law\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
+		body.append("\n");
 		//TODO add email body content
 		
 		return body.toString();
@@ -89,6 +110,7 @@ public class EmailHelper {
 		StringBuffer body = new StringBuffer();
 		body.append("Medical Pain Log\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
+		body.append("\n");
 		//TODO add email body content
 		
 		return body.toString();
@@ -97,7 +119,6 @@ public class EmailHelper {
 	public String buildEmailBodyImportantDocs(AccidentTO ato) {
 		StringBuffer body = new StringBuffer();
 		body.append("Important Documents\n\n");
-		//TODO add email body content
 		
 		return body.toString();
 	}

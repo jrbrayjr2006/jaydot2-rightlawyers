@@ -363,22 +363,34 @@ public class MainActivity extends Activity
 			        		emailBodyText = emailHelper.buildEmailBodyCarAccident(ato);
 			        		break;
 			        	case 4:
-			        		emailSubjectText = ""; //TODO
-			        		break;
-			        	case 5:
 			        		emailSubjectText = getResources().getString(R.string.property_damage_claim);
-			        		
+			        		ato.yourInsuranceCompany = allFields.get(3).getText().toString();;
+			        		ato.yourPolicyNumber = allFields.get(4).getText().toString();;
+			        		ato.otherInsuranceCompany = allFields.get(5).getText().toString();;
+			        		ato.otherPolicyNumber = allFields.get(6).getText().toString();;
 			        		emailBodyText = emailHelper.buildEmailBodyPropertyDamage(ato);
 			        		break;
-			        	case 6:
+			        	case 5:
 			        		emailSubjectText = getResources().getString(R.string.police_report);
-			        		
+			        		ato.policeDepartment = allFields.get(3).getText().toString();
+			        		ato.reportNumber = allFields.get(4).getText().toString();
+			        		ato.citationNo = allFields.get(4).getText().toString();
 			        		emailBodyText = emailHelper.buildEmailBodyPoliceReport(ato);
 			        		break;
-			        	case 7:
+			        	case 6:
 			        		emailSubjectText = getResources().getString(R.string.family_law);
 			        		
 			        		emailBodyText = emailHelper.buildEmailBodyFamilyLaw(ato);
+			        		break;
+			        	case 7:
+			        		emailSubjectText = getResources().getString(R.string.medical_pain_log);
+			        		
+			        		emailBodyText = emailHelper.buildEmailBodyMedicalPainLog(ato);
+			        		break;
+			        	case 8:
+			        		emailSubjectText = getResources().getString(R.string.important_documents);
+			        		
+			        		emailBodyText = emailHelper.buildEmailBodyImportantDocs(ato);
 			        		break;
 						}
 						

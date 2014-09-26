@@ -24,6 +24,10 @@ public class AccidentTO {
 	public String cityCounty = "";
 	public String courtDate = "";
 	
+	public String yourInsuranceCompany = "";
+	public String yourPolicyNumber = "";
+	public String otherInsuranceCompany = "";
+	public String otherPolicyNumber = "";
 	
 	public String otherName = "";
 	public String otherPhone = "";
@@ -35,7 +39,10 @@ public class AccidentTO {
 	public String otherModel = "";
 	public String otherLicense = "";
 	public String officerName = "";
+	
+	public String policeDepartment = "";
 	public String reportNumber = "";
+	
 	
 	public String notes = "";
 	
