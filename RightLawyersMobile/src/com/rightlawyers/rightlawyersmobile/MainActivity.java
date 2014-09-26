@@ -156,7 +156,9 @@ public class MainActivity extends Activity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         
-        private static final int BUTTON_SPACING = 70;
+        private static final int BUTTON_SPACING = 80;
+        
+        private static final int FIELD_SPACING = 80;
         
         private static final int REQUEST_IMAGE_CAPTURE = 1;
         
@@ -229,6 +231,7 @@ public class MainActivity extends Activity
         	String[] carAccidentPropertyDamageClaimFields = getResources().getStringArray(R.array.property_damage_claim);
         	String[] carAccidentPoliceReport = getResources().getStringArray(R.array.police_report);
         	String[] familyLawFields = getResources().getStringArray(R.array.family_law_items);
+        	String[] painLogFields = getResources().getStringArray(R.array.medical_pain_log);
         	// get the index of the screen
         	int screenId = (Integer)this.getArguments().get(ARG_SECTION_NUMBER);
         	// create array of common and screen specific fields
@@ -249,31 +252,33 @@ public class MainActivity extends Activity
         		photoFlag = true;
         		break;
         	case 4:
-        		fields = util.concat(generalFields,carAccidentFields);
-        		emailSubjectText = ""; //TODO
-        		break;
-        	case 5:
         		fields = util.concat(generalFields,carAccidentPropertyDamageClaimFields);
         		emailSubjectText = getResources().getString(R.string.property_damage_claim);
         		break;
-        	case 6:
+        	case 5:
         		fields = util.concat(generalFields,carAccidentPoliceReport);
         		emailSubjectText = getResources().getString(R.string.police_report);
         		break;
-        	case 7:
+        	case 6:
         		fields = util.concat(generalFields,familyLawFields);
         		emailSubjectText = getResources().getString(R.string.family_law);
         		break;
+        	case 7:
+        		fields = util.concat(generalFields,painLogFields);
+        		emailSubjectText = getResources().getString(R.string.medical_pain_log); //TODO
+        		break;
+        	case 8:
+        		fields = generalFields;
+        		emailSubjectText = getResources().getString(R.string.important_documents); //TODO
+        		photoFlag = true;
+        		break;
         	default:
-        		emailSubjectText = "";
-        		//fields = generalFields;
+        		emailSubjectText = "Client Inquiry";
         	}
-        	
-        	// create array of common and screen specific fields
-        	//String[] fields = util.concat(generalFields,trafficTicketFields);
         	
         	int i = 0;
         	int positionY = 10;
+        	int positionX = 20;
         	
         	// all fields generated
         	allFields = new ArrayList<EditText>();
@@ -289,14 +294,14 @@ public class MainActivity extends Activity
 	            fieldEditText.setBackgroundColor(getResources().getColor(R.color.grey));
 	            float customAlpha = Float.valueOf("0.75");
 	            fieldEditText.setAlpha(customAlpha);
-	            positionY = positionY + 70;
+	            positionY = positionY + FIELD_SPACING;
 	            fragmentLayout.addView(fieldEditText);
         	}
         	
         	// generate photo button only on certain forms
         	if(photoFlag == true) {
         		photoButton = generatePhotoButton(++i);
-        		positionY = positionY + 70;
+        		positionY = positionY + BUTTON_SPACING;
         		photoButton.setY(positionY);
         		photoButton.setOnClickListener(new OnClickListener() {
 
@@ -308,8 +313,11 @@ public class MainActivity extends Activity
         		fragmentLayout.addView(photoButton);
         		
         		photoThumb = new ImageView(getActivity());
-        		photoThumb.setLayoutParams(new LayoutParams(36,36));  //TODO test
-        		positionY = positionY + 70;
+        		photoThumb.setLayoutParams(new LayoutParams(50,50));  //TODO test
+        		photoThumb.setImageResource(R.drawable.camera_icon);
+        		positionY = positionY + 90;
+        		photoThumb.setY(positionY);
+        		photoThumb.setX(positionX);
         		
         		fragmentLayout.addView(photoThumb);
         	}

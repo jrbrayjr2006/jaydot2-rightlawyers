@@ -3,7 +3,6 @@
     <string-array name="navigation_items">
         <item>Right Lawyers</item>
         <item>Traffic Ticket</item>
-       	<item>Car Accident ></item>
        	<item name="sub">Car Accident</item>
        	<item name="sub">Property Damage Claim</item>
        	<item name="sub">Police Report</item>
@@ -25,7 +24,6 @@
         <item>City or County of Court</item>
         <item>Court Date</item>
         <item>How did you hear about us?</item>
-        <item>Photo of Citation and Info</item>
     </string-array>
     <string-array name="car_accident">
         <item name="vehicle_make">Vehicle Make</item>
@@ -48,5 +46,12 @@
         <item>Currently Living Together?</item>
         <item>IRA / Pension / 401(k)</item>
         <item>Combined Incomes</item>
+    </string-array>
+    <string-array name="medical_pain_log">
+        <item>Pain Description 1</item>
+        <item>Pain Description 2</item>
+        <item>Pain Description 3</item>
+        <item>Pain Description 4</item>
+        <item>Pain Description 5</item>
     </string-array>
 </resources>
