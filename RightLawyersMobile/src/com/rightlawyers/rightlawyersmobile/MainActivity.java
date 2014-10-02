@@ -163,6 +163,11 @@ public class MainActivity extends Activity
         private static final int REQUEST_IMAGE_CAPTURE = 1;
         
         /**
+         * Container for images to be attached to email
+         */
+        ArrayList<Uri> photoList = new ArrayList<Uri>();
+        
+        /**
          * Transfer object for data
          */
         AccidentTO ato = new AccidentTO();
@@ -500,7 +505,7 @@ public class MainActivity extends Activity
         }
         
         /**
-         * send form data via email
+         * send form data via email and add photos to email
          */
         private void sendEmail() {
         	Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -515,6 +520,9 @@ public class MainActivity extends Activity
 			//TODO complete method
 			String body = "get email body";
 			emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+			if((photoList != null) && !(photoList.isEmpty())) {
+				emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, photoList);
+			}
 			
 			startActivityForResult(Intent.createChooser(emailIntent, "Send Report"), 1000);
         }
@@ -587,7 +595,7 @@ public class MainActivity extends Activity
         }
         
         /**
-         * 
+         * Take a picture and initialize the ArrayList that will hold the pictures
          */
         private void takePicture() {
         	Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -605,6 +613,10 @@ public class MainActivity extends Activity
         	
         	//photoFile = new File(photoDir, photoFileName);
     	    this.photoCaptureUri=Uri.fromFile(photoFile);
+    	    
+    	    photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoCaptureUri);
+    	    photoList.add(photoCaptureUri);
+    	    
         	if (photoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(photoIntent, REQUEST_IMAGE_CAPTURE);
             }

@@ -11,9 +11,6 @@ import com.rightlawyers.rightlawyersmobile.to.AccidentTO;
  */
 public class EmailHelper {
 	
-	//protected Context mContext;
-	//protected Resources mResources;
-	
 	public EmailHelper() {
 		//
 	}
@@ -64,7 +61,7 @@ public class EmailHelper {
 	}
 	 
 	/**
-	 * Experimental method to see if patterns and convention can be used
+	 * Builds the message body for property damage claim email forms
 	 * @param ato
 	 * @return
 	 */
@@ -72,8 +69,6 @@ public class EmailHelper {
 		StringBuffer body = new StringBuffer();
 		body.append("Accident Report - Property Damage\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
-		//TODO add email body content
-		//String[] carAccidentPropertyDamageClaimFields = mResources.getStringArray(R.array.property_damage_claim);
 		body.append("\nYour Insurance Company: ");
 		body.append(ato.yourInsuranceCompany);
 		body.append("\nYour Policy Number: ");
