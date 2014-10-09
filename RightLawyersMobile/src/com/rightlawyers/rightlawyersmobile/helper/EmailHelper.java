@@ -104,9 +104,9 @@ public class EmailHelper {
 		body.append(ato.ownHome);
 		body.append("\nCurrently Living Together? ");
 		body.append(ato.currentlyLivingTogether);
-		body.append("\nIRA / Pension / 401(k)");
+		body.append("\nIRA / Pension / 401(k): ");
 		body.append(ato.iraPension401k);
-		body.append("\nCombined Incomes");
+		body.append("\nCombined Incomes: ");
 		body.append(ato.combinedIncomes);
 		
 		return body.toString();
@@ -117,7 +117,16 @@ public class EmailHelper {
 		body.append("Medical Pain Log\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
 		body.append("\n");
-		//TODO add email body content
+		body.append("\nPain Description 1: ");
+		body.append(ato.painDescription1);
+		body.append("\nPain Description 2: ");
+		body.append(ato.painDescription2);
+		body.append("\nPain Description 3: ");
+		body.append(ato.painDescription3);
+		body.append("\nPain Description 4: ");
+		body.append(ato.painDescription4);
+		body.append("\nPain Description 5: ");
+		body.append(ato.painDescription5);
 		
 		return body.toString();
 	}

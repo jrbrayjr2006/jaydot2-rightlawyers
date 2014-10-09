@@ -394,7 +394,11 @@ public class MainActivity extends Activity
 			        		break;
 			        	case 7:
 			        		emailSubjectText = getResources().getString(R.string.medical_pain_log);
-			        		
+			        		ato.painDescription1 = allFields.get(3).getText().toString();
+			        		ato.painDescription2 = allFields.get(4).getText().toString();
+			        		ato.painDescription3 = allFields.get(5).getText().toString();
+			        		ato.painDescription4 = allFields.get(6).getText().toString();
+			        		ato.painDescription5 = allFields.get(7).getText().toString();
 			        		emailBodyText = emailHelper.buildEmailBodyMedicalPainLog(ato);
 			        		break;
 			        	case 8:

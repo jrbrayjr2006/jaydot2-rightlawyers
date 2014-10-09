@@ -50,6 +50,12 @@ public class AccidentTO {
 	public String iraPension401k = "";
 	public String combinedIncomes = "";
 	
+	public String painDescription1 = "";
+	public String painDescription2 = "";
+	public String painDescription3 = "";
+	public String painDescription4 = "";
+	public String painDescription5 = "";
+	
 	public String notes = "";
 	
 	public ArrayList<Uri> yourCarImages;
