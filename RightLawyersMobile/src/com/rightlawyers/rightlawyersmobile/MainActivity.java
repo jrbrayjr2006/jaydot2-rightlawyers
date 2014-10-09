@@ -384,7 +384,12 @@ public class MainActivity extends Activity
 			        		break;
 			        	case 6:
 			        		emailSubjectText = getResources().getString(R.string.family_law);
-			        		
+			        		ato.yearsMarried = allFields.get(3).getText().toString();
+			        		ato.numberOfChildren = allFields.get(4).getText().toString();
+			        		ato.ownHome = allFields.get(5).getText().toString();;
+			        		ato.currentlyLivingTogether = allFields.get(6).getText().toString();
+			        		ato.iraPension401k = allFields.get(7).getText().toString();
+			        		ato.combinedIncomes = allFields.get(8).getText().toString();
 			        		emailBodyText = emailHelper.buildEmailBodyFamilyLaw(ato);
 			        		break;
 			        	case 7:

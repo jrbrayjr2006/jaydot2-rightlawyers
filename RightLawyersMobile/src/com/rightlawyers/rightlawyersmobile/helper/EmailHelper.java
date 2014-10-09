@@ -96,7 +96,18 @@ public class EmailHelper {
 		body.append("Family Law\n\n");
 		body.append(buildEmailBodyBasicInfo(ato));
 		body.append("\n");
-		//TODO add email body content
+		body.append("\nYears Married: ");
+		body.append(ato.yearsMarried);
+		body.append("\nNumber of Children: ");
+		body.append(ato.numberOfChildren);
+		body.append("\nOwn Home? ");
+		body.append(ato.ownHome);
+		body.append("\nCurrently Living Together? ");
+		body.append(ato.currentlyLivingTogether);
+		body.append("\nIRA / Pension / 401(k)");
+		body.append(ato.iraPension401k);
+		body.append("\nCombined Incomes");
+		body.append(ato.combinedIncomes);
 		
 		return body.toString();
 	}

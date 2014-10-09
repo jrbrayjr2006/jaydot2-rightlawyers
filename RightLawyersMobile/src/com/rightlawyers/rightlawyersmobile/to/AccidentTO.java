@@ -43,6 +43,12 @@ public class AccidentTO {
 	public String policeDepartment = "";
 	public String reportNumber = "";
 	
+	public String yearsMarried = "";
+	public String numberOfChildren = "";
+	public String ownHome = "";
+	public String currentlyLivingTogether = "";
+	public String iraPension401k = "";
+	public String combinedIncomes = "";
 	
 	public String notes = "";
 	
