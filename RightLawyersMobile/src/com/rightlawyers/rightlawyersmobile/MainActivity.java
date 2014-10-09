@@ -544,8 +544,8 @@ public class MainActivity extends Activity
 			emailIntent.setType("text/plain");
 			List<String> emailAddresses = new ArrayList<String>();
 			emailAddresses.add(getResources().getString(R.string.test_email));
-			//emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.rightlawyers_info_email)});
-			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.test_email)});  //TODO remove when testing is done
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.rightlawyers_info_email)});
+			//emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.test_email)});  //TODO remove when testing is done
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
 			if(emailBody == null) {
 				emailBody = "No email body available";
