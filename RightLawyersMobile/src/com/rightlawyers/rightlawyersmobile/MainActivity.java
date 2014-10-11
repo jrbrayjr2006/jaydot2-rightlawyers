@@ -359,12 +359,16 @@ public class MainActivity extends Activity
 			        		ato.citationNo = allFields.get(3).getText().toString();
 			        		ato.cityCounty = allFields.get(4).getText().toString();
 			        		ato.courtDate = allFields.get(5).getText().toString();
+			        		ato.howReferred = allFields.get(6).getText().toString();
 			        		emailBodyText = emailHelper.buildEmailBodyTrafficTicket(ato);
 			        		break;
 			        	case 3:
 			        		emailSubjectText = getResources().getString(R.string.accident_report);
 			        		ato.yourMake = allFields.get(3).getText().toString();
 			        		ato.yourModel = allFields.get(4).getText().toString();
+			        		ato.otherName = allFields.get(5).getText().toString();
+			        		ato.otherPhone = allFields.get(6).getText().toString();
+			        		ato.otherEmail = allFields.get(7).getText().toString();
 			        		emailBodyText = emailHelper.buildEmailBodyCarAccident(ato);
 			        		break;
 			        	case 4:
@@ -379,7 +383,6 @@ public class MainActivity extends Activity
 			        		emailSubjectText = getResources().getString(R.string.police_report);
 			        		ato.policeDepartment = allFields.get(3).getText().toString();
 			        		ato.reportNumber = allFields.get(4).getText().toString();
-			        		ato.citationNo = allFields.get(4).getText().toString();
 			        		emailBodyText = emailHelper.buildEmailBodyPoliceReport(ato);
 			        		break;
 			        	case 6:
@@ -547,7 +550,6 @@ public class MainActivity extends Activity
         	Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType("text/plain");
 			List<String> emailAddresses = new ArrayList<String>();
-			emailAddresses.add(getResources().getString(R.string.test_email));
 			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.rightlawyers_info_email)});
 			//emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {getString(R.string.test_email)});  //TODO remove when testing is done
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);

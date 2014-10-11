@@ -28,6 +28,7 @@ public class AccidentTO {
 	public String yourPolicyNumber = "";
 	public String otherInsuranceCompany = "";
 	public String otherPolicyNumber = "";
+	public String howReferred = "";
 	
 	public String otherName = "";
 	public String otherPhone = "";

@@ -22,30 +22,16 @@ public class EmailHelper {
 	public String buildEmailBodyTrafficTicket(AccidentTO ato) {
 		StringBuffer body = new StringBuffer();
 		
-		//TODO add logic to support building email body
 		body.append("Traffic Ticket\n\n");
     	body.append(buildEmailBodyBasicInfo(ato));
-    	body.append("\nOther Name: " + ato.otherName);
-    	body.append("\nOther Email: " + ato.otherEmail);
-    	body.append("\nOther Phone: " + ato.otherPhone);
+    	//body.append("\nOther Name: " + ato.otherName);
+    	//body.append("\nOther Email: " + ato.otherEmail);
+    	//body.append("\nOther Phone: " + ato.otherPhone);
     	body.append("\n\nTicket Information\n\n");
     	body.append("\nCitation Number: " + ato.citationNo);
     	body.append("\nCity or County of Court: " + ato.cityCounty);
     	body.append("\nCourt Date: " + ato.courtDate);
-    	
-    	/*
-    	body.append("Your Make: " + ato.yourMake);
-    	body.append("\nYour Model: " + ato.yourModel);
-    	body.append("\nYour License/Year: " + ato.yourLicense);
-    	body.append("\nOther Make: " + ato.otherMake);
-    	body.append("\nOther Model: " + ato.otherModel);
-    	body.append("\nOther License/Year: " + ato.otherLicense);
-    	body.append("\n\nPolice Info:\n\n");
-    	body.append("Officer Name: " + ato.officerName);
-    	body.append("\nReport Number: " + ato.reportNumber);
-    	body.append("\nCity/County: " + ato.cityCounty);
-    	body.append("\n\nNotes\n\n" + ato.notes);
-    	*/
+    	body.append("\nReferred by: " + ato.howReferred);
     	
 		return body.toString();
 	}
@@ -56,7 +42,9 @@ public class EmailHelper {
 		body.append(buildEmailBodyBasicInfo(ato));
 		body.append("Your Vehicle Make: " + ato.yourMake);
     	body.append("\nYour Vehicle Model: " + ato.yourModel);
-		
+    	body.append("\nOther Name: " + ato.otherName);
+    	body.append("\nOther Email: " + ato.otherEmail);
+    	body.append("\nOther Phone: " + ato.otherPhone);
 		return body.toString();
 	}
 	 
@@ -87,6 +75,10 @@ public class EmailHelper {
 		body.append(buildEmailBodyBasicInfo(ato));
 		body.append("\nPolice Department");
 		//TODO add email body content
+		body.append("\nPolice Department: ");
+		body.append(ato.policeDepartment);
+		body.append("\nPolice Report Number: ");
+		body.append(ato.reportNumber);
 		
 		return body.toString();
 	}
@@ -134,6 +126,7 @@ public class EmailHelper {
 	public String buildEmailBodyImportantDocs(AccidentTO ato) {
 		StringBuffer body = new StringBuffer();
 		body.append("Important Documents\n\n");
+		body.append(buildEmailBodyBasicInfo(ato));
 		
 		return body.toString();
 	}

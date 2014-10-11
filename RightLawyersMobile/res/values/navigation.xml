@@ -28,6 +28,9 @@
     <string-array name="car_accident">
         <item name="vehicle_make">Vehicle Make</item>
         <item name="vehicle_model">Vehicle Model</item>
+        <item name="other_name">Other Name (First Last)</item>
+        <item name="other_cell_phone">Other Cell Phone Number</item>
+        <item name="other_email">Other Email Address</item>
     </string-array>
     <string-array name="property_damage_claim ">
         <item>Your Insurance Company</item>
@@ -37,7 +40,7 @@
     </string-array>
     <string-array name="police_report">
         <item>Police Department</item>
-        <item>Report Number</item>
+        <item>Police Report Number</item>
     </string-array>
     <string-array name="family_law_items">
         <item>Years Married</item>
