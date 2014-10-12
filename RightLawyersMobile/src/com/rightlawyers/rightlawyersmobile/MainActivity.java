@@ -25,6 +25,7 @@ import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +52,8 @@ public class MainActivity extends Activity
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    
+    private DrawerLayout mNavigationDrawerLayout;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -74,11 +77,11 @@ public class MainActivity extends Activity
         	fragmentManager.beginTransaction().add(R.id.container, splashScreenFragment).commit();
         }
         setTitle("Right Lawyers");
+        
+        mNavigationDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, mNavigationDrawerLayout);
     }
 
     @Override
@@ -130,6 +133,12 @@ public class MainActivity extends Activity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	mNavigationDrawerLayout.openDrawer(Gravity.LEFT);
     }
     
     /**
@@ -328,7 +337,7 @@ public class MainActivity extends Activity
         	}
             
             // create submission button
-        	if(screenId > 1) {
+        	if((screenId > 1) && (screenId != 8)) {
 	            Button submitButton = new Button(getActivity());
 	            submitButton.setId(i + 1);
 	            submitButton.setText(getResources().getString(R.string.submit_button_text));
@@ -411,9 +420,7 @@ public class MainActivity extends Activity
 			        		break;
 						}
 						
-						
-						
-						sendEmail();
+						//sendEmail();
 						sendEmail(emailSubjectText,emailBodyText);
 						
 						Toast.makeText(getActivity(), emailSubjectText, Toast.LENGTH_SHORT).show();
@@ -421,7 +428,7 @@ public class MainActivity extends Activity
 	            	
 	            });
 	            fragmentLayout.addView(submitButton);
-        	} else {
+        	} else if(screenId != 8) {
         		int verticalPosition = screenHeight/2;
         		// generate call attorney button
         		Button callButton = new Button(getActivity());
@@ -498,17 +505,17 @@ public class MainActivity extends Activity
         	super.onActivityResult(requestCode, resultCode, data);
         	if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
         		Bundle extras = data.getExtras();
-                //Bitmap imageBitmap = (Bitmap) extras.get("data");
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
 
 	        	Uri contentUri = photoCaptureUri;
 			    BitmapFactory.Options options = new BitmapFactory.Options();
 			    options.inSampleSize = 4;
 			    	
-			    Bitmap imageBitmap = BitmapFactory.decodeFile( contentUri.getPath(), options );
+			    //Bitmap imageBitmap = BitmapFactory.decodeFile( contentUri.getPath(), options );
 			    Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
 				cursor.moveToFirst();  //if not doing this, 01-22 19:17:04.564: ERROR/AndroidRuntime(26264): Caused by: android.database.CursorIndexOutOfBoundsException: Index -1 requested, with a size of 1
-				int idx = cursor.getColumnIndex(ImageColumns.DATA);
-				String fileSrc = cursor.getString(idx);
+				//int idx = cursor.getColumnIndex(ImageColumns.DATA);
+				//String fileSrc = cursor.getString(idx);
 				photoCaptureUri=contentUri;
 				if(photoThumb != null) {
                 	photoThumb.setImageBitmap(imageBitmap);
@@ -518,6 +525,7 @@ public class MainActivity extends Activity
         
         /**
          * send form data via email and add photos to email
+         * This method is for testing purposes only and is generally not used in production
          */
         private void sendEmail() {
         	Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -557,6 +565,9 @@ public class MainActivity extends Activity
 				emailBody = "No email body available";
 			}
 			emailIntent.putExtra(Intent.EXTRA_TEXT, emailBody);
+			if((photoList != null) && !(photoList.isEmpty())) {
+				emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, photoList);
+			}
 			
 			startActivityForResult(Intent.createChooser(emailIntent, "Send Report"), 1000);
         }
