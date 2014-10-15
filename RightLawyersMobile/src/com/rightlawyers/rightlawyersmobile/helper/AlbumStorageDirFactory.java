@@ -8,6 +8,6 @@ import java.io.File;
  * </pre>
  *
  */
-abstract class AlbumStorageDirFactory {
+public abstract class AlbumStorageDirFactory {
 	public abstract File getAlbumStorageDir(String albumName);
 }
