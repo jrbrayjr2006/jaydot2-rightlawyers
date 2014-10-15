@@ -18,10 +18,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Display;
@@ -39,8 +39,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.rightlawers.rightlawyersmobile.R;
+import com.rightlawyers.rightlawyersmobile.helper.AlbumStorageDirFactory;
+import com.rightlawyers.rightlawyersmobile.helper.BaseAlbumDirFactory;
 import com.rightlawyers.rightlawyersmobile.helper.EmailHelper;
+import com.rightlawyers.rightlawyersmobile.helper.FroyoAlbumDirFactory;
 import com.rightlawyers.rightlawyersmobile.helper.UtilHelper;
 import com.rightlawyers.rightlawyersmobile.to.AccidentTO;
 
@@ -167,9 +169,19 @@ public class MainActivity extends Activity
         
         private static final int BUTTON_SPACING = 80;
         
-        private static final int FIELD_SPACING = 80;
+        private static final int FIELD_SPACING = 60; // 1.5
+        
+        private static final int XHD_FIELD_SPACING = 80;  // 2.0
+        
+        private static final int XXHD_FIELD_SPACING = 120;  // 3.0
+        
+        private static final int XXXHD_FIELD_SPACING = 140;  // 4.0
         
         private static final int REQUEST_IMAGE_CAPTURE = 1;
+        
+        private static final String JPEG_FILE_PREFIX = "IMG_";
+        
+    	private static final String JPEG_FILE_SUFFIX = ".jpg";
         
         /**
          * Container for images to be attached to email
@@ -207,6 +219,8 @@ public class MainActivity extends Activity
         List<EditText> allFields;
         
         EmailHelper emailHelper = new EmailHelper();
+        
+        private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -221,6 +235,16 @@ public class MainActivity extends Activity
         }
 
         public PlaceholderFragment() {
+        }
+        
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+        	super.onCreate(savedInstanceState);
+        	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+    			mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
+    		} else {
+    			mAlbumStorageDirFactory = new BaseAlbumDirFactory();
+    		}
         }
 
         @Override
@@ -294,8 +318,18 @@ public class MainActivity extends Activity
         	int positionY = 10;
         	int positionX = 20;
         	
+        	float screenDensity = getResources().getDisplayMetrics().density;
+        	Log.d("DEBUG", "The screen density is " + Float.toString(screenDensity));
+        	
         	// all fields generated
         	allFields = new ArrayList<EditText>();
+        	int fieldSpacing = XHD_FIELD_SPACING;
+        	if(screenDensity < 2.0) {
+        		fieldSpacing = FIELD_SPACING;
+        	}
+        	if(screenDensity > 2.0) {
+        		fieldSpacing = XXHD_FIELD_SPACING;
+        	}
         	// loop through fields
         	for(String field: fields) {
         		i++;
@@ -306,9 +340,10 @@ public class MainActivity extends Activity
 	            fieldEditText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	            fieldEditText.setY(positionY);
 	            fieldEditText.setBackgroundColor(getResources().getColor(R.color.grey));
+	            fieldEditText.setHeight(fieldSpacing - 10); // See calculations above
 	            float customAlpha = Float.valueOf("0.75");
 	            fieldEditText.setAlpha(customAlpha);
-	            positionY = positionY + FIELD_SPACING;
+	            positionY = positionY + fieldSpacing;
 	            fragmentLayout.addView(fieldEditText);
         	}
         	
@@ -506,22 +541,24 @@ public class MainActivity extends Activity
         	if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
         		Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
+                photoThumb.setImageBitmap(imageBitmap);
 
 	        	Uri contentUri = photoCaptureUri;
 			    BitmapFactory.Options options = new BitmapFactory.Options();
 			    options.inSampleSize = 4;
-			    	
-			    //Bitmap imageBitmap = BitmapFactory.decodeFile( contentUri.getPath(), options );
+			    /*
 			    Cursor cursor = getActivity().getContentResolver().query(data.getData(), null, null, null, null);
 				cursor.moveToFirst();  //if not doing this, 01-22 19:17:04.564: ERROR/AndroidRuntime(26264): Caused by: android.database.CursorIndexOutOfBoundsException: Index -1 requested, with a size of 1
-				//int idx = cursor.getColumnIndex(ImageColumns.DATA);
-				//String fileSrc = cursor.getString(idx);
+	
 				photoCaptureUri=contentUri;
 				if(photoThumb != null) {
                 	photoThumb.setImageBitmap(imageBitmap);
                 }
+                */
         	}
         }
+        
+
         
         /**
          * send form data via email and add photos to email
@@ -625,7 +662,7 @@ public class MainActivity extends Activity
         	// Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = setUpPhotoFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }
@@ -644,6 +681,74 @@ public class MainActivity extends Activity
             }
         }
         
+        /* Photo album for this application */
+    	private String getAlbumName() {
+    		return getString(R.string.album_name);
+    	}
+        
+        private File getAlbumDir() {
+    		File storageDir = null;
+
+    		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+    			
+    			storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
+
+    			if (storageDir != null) {
+    				if (! storageDir.mkdirs()) {
+    					if (! storageDir.exists()){
+    						Log.d("CameraSample", "failed to create directory");
+    						return null;
+    					}
+    				}
+    			}
+    			
+    		} else {
+    			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+    		}
+    		
+    		return storageDir;
+    	}
+        /*
+        private File createImageFile() throws IOException {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
+            File image = File.createTempFile(
+                imageFileName,  // prefix 
+                ".jpg",         // suffix 
+                storageDir      // directory
+            );
+
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+            photoFileName = imageFileName;
+            return image;
+        }
+    	*/
+        
+        private File createImageFile() throws IOException {
+    		// Create an image file name
+    		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    		String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+    		File albumF = getAlbumDir();
+    		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
+    		return imageF;
+    	}
+        
+        /**
+         * Set up the file for the photo
+         * @return
+         * @throws IOException
+         */
+        private File setUpPhotoFile() throws IOException {
+    		
+    		File f = createImageFile();
+    		mCurrentPhotoPath = f.getAbsolutePath();
+    		
+    		return f;
+    	}
+        
         /**
          * Create the local storage area for photos
          */
@@ -656,22 +761,7 @@ public class MainActivity extends Activity
     	    }
     	}
         
-        private File createImageFile() throws IOException {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
-            File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-            );
-
-            // Save a file: path for use with ACTION_VIEW intents
-            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-            photoFileName = imageFileName;
-            return image;
-        }
+        
         	
     }
 

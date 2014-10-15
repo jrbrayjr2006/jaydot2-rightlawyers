@@ -1,8 +1,6 @@
 package com.rightlawyers.rightlawyersmobile;
 
 
-import com.rightlawers.rightlawyersmobile.R;
-
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
