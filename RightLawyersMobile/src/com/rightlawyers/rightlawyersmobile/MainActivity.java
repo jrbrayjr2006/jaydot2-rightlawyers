@@ -541,7 +541,12 @@ public class MainActivity extends Activity
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
         	super.onActivityResult(requestCode, resultCode, data);
+        	
+        	
+        	
         	if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        		handleCameraPhoto(data);
+        		/*
         		Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 photoThumb.setImageBitmap(imageBitmap);
@@ -625,7 +630,6 @@ public class MainActivity extends Activity
          */
         private int getDeviceScreenHeight() {
         	Display display = getActivity().getWindowManager().getDefaultDisplay();
-        	//DisplayMetrics metrics = new DisplayMetrics();
         	Point size = new Point();
         	display.getSize(size);
         	return size.y;
@@ -661,27 +665,34 @@ public class MainActivity extends Activity
          */
         private void takePicture() {
         	Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        	
-        	// Create the File where the photo should go
-            //File photoFile = null;
-            //try {
-                //photoFile = setUpPhotoFile();
-            //} catch (IOException ex) {
-                // Error occurred while creating the File
-            //}
-
-        	
-        	//createDirectoryForPictures();
-        	
-        	//photoFile = new File(photoDir, photoFileName);
-    	    //this.photoCaptureUri=Uri.fromFile(photoFile);
-    	    
-    	    //photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoCaptureUri);
-    	    //photoList.add(photoCaptureUri);
     	    
         	if (photoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        		// Create the File where the photo should go
+                File photoFile = null;
+                try {
+                	photoFile = setUpPhotoFile();
+                	mCurrentPhotoPath = photoFile.getAbsolutePath();
+                	//photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.e("ERROR","Error occurred while creating the File");
+                    ex.printStackTrace();
+    				photoFile = null;
+    				mCurrentPhotoPath = null;
+                }
+                
                 startActivityForResult(photoIntent, REQUEST_IMAGE_CAPTURE);
             }
+        }
+        
+        private void handleCameraPhoto(Intent intent) {
+        	Bundle extras = intent.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photoThumb.setImageBitmap(imageBitmap);
+
+        	Uri contentUri = photoCaptureUri;
+		    BitmapFactory.Options options = new BitmapFactory.Options();
+		    options.inSampleSize = 4;
         }
         
         /* Photo album for this application */
@@ -711,24 +722,6 @@ public class MainActivity extends Activity
     		
     		return storageDir;
     	}
-        /*
-        private File createImageFile() throws IOException {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), getResources().getString(R.string.photo_storage_directory));
-            File image = File.createTempFile(
-                imageFileName,  // prefix 
-                ".jpg",         // suffix 
-                storageDir      // directory
-            );
-
-            // Save a file: path for use with ACTION_VIEW intents
-            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-            photoFileName = imageFileName;
-            return image;
-        }
-    	*/
         
         private File createImageFile() throws IOException {
     		// Create an image file name
