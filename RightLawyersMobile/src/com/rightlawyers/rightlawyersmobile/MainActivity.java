@@ -330,6 +330,9 @@ public class MainActivity extends Activity
         	if(screenDensity > 2.0) {
         		fieldSpacing = XXHD_FIELD_SPACING;
         	}
+        	if(screenDensity > 3.0) {
+        		fieldSpacing = XXXHD_FIELD_SPACING;
+        	}
         	// loop through fields
         	for(String field: fields) {
         		i++;
@@ -660,21 +663,21 @@ public class MainActivity extends Activity
         	Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         	
         	// Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = setUpPhotoFile();
-            } catch (IOException ex) {
+            //File photoFile = null;
+            //try {
+                //photoFile = setUpPhotoFile();
+            //} catch (IOException ex) {
                 // Error occurred while creating the File
-            }
+            //}
 
         	
-        	createDirectoryForPictures();
+        	//createDirectoryForPictures();
         	
         	//photoFile = new File(photoDir, photoFileName);
-    	    this.photoCaptureUri=Uri.fromFile(photoFile);
+    	    //this.photoCaptureUri=Uri.fromFile(photoFile);
     	    
-    	    photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoCaptureUri);
-    	    photoList.add(photoCaptureUri);
+    	    //photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoCaptureUri);
+    	    //photoList.add(photoCaptureUri);
     	    
         	if (photoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(photoIntent, REQUEST_IMAGE_CAPTURE);
